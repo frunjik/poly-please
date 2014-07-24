@@ -1,0 +1,9 @@
+RewriteEngine on
+
+#route to designer
+RewriteRule ^designer/components/(.*)$ /designer/components/$1 [L]
+
+#route to site
+RewriteRule .*/components(.*)$ /components/$1 [L]
+RewriteRule ^please(.*)$ index.php/please$1 [L]
+
