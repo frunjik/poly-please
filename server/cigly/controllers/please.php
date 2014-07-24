@@ -13,8 +13,8 @@ class Please extends CI_Controller {
 		$this->name = 'please';
 		
 		// TODO: put in config
-		$this->path_logs = 'C:/wamp/logs/';												// ends with SLASH
-		$this->path_root = 'C:/Projects/Web/poly-please/server/cigly/application/';			// ends with SLASH
+		$this->path_logs = 'C:/wamp/logs/';										// ends with SLASH
+		$this->path_root = 'C:/Projects/Web/poly-please/server/cigly/';			// ends with SLASH
 		
 		// TODO: put in dict - generalize ...
 		$this->page_view = 'poly_page_view';
