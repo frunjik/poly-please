@@ -72,7 +72,7 @@ if (defined('ENVIRONMENT'))
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = 'C:\Projects\Web\poly-please\server\cigly\application';
+	$application_folder = 'C:\Projects\Web\poly-please\server\cigly';
 
 /*
  * --------------------------------------------------------------------
