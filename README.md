@@ -3,4 +3,4 @@ poly-please
 
 A playground for learning Polymer
 
-[coming soonish]
+[status: highly experimental and buggy]
