@@ -130,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <core-scaffold>
     <core-header-panel navigation flex mode="seamed">
       <core-toolbar style="background-color: #526E9C; color: #fff;">
-        <a style="color: #fff;" href="/poly/please">Poly! - Please?</a></core-toolbar>
+        <a style="color: #fff;" href="/poly/please/">Poly! - Please?</a></core-toolbar>
         <core-menu selected="0" selectedindex="0" id="core_menu">
           <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
             <core-item label="welcome" size="24" horizontal center layout onClick="show('load/poly_view_welcome')"></core-item>

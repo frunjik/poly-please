@@ -39,7 +39,6 @@ class Please extends CI_Controller {
 		$page = $this->load->view($this->page_view, '', true);
 		$content = str_replace($this->name.'/view', '', $content);
 		
-		
 		if($content)
 		{
 			if($content[0]==='/') $content=substr($content,1);
@@ -59,7 +58,7 @@ class Please extends CI_Controller {
 	private function __view($url)
 	{
 		$this->load->helper('url');
-		$result = '';
+		$result = '[content]';
 		$content = $url;
 		$page = $this->load->view($this->page_view, '', true);
 		$content = str_replace($this->name.'/view', '', $content);
@@ -83,7 +82,7 @@ class Please extends CI_Controller {
 	{
 		$this->load->helper('url');
 	
-		$result = '';
+		$result = '[content]';
 		$content = $this->uri->uri_string();
 		$content = str_replace($this->name.'/edit/', '', $content);
 		$page = $this->load->view($this->page_edit, '', true);
@@ -91,11 +90,13 @@ class Please extends CI_Controller {
 		if($content != $this->name.'/edit' && $content != $this->name.'/edit/')
 		{
 			$page = str_replace('[get_url]', site_url().$this->name.'/load/'.$content, $page);
-
+			
 			// TODO test if view exists ????
 			$result = $this->do_load($content,$result);
+			
 			if($result)
 				$result = html_escape($result);
+
 			$result = $this->replace_content($result, $page);
 		}
 		else
@@ -107,7 +108,7 @@ class Please extends CI_Controller {
 	{
 		$this->load->helper('url');
 	
-		$result = '';
+		$result = '[content]';
 		$content = $this->uri->uri_string();
 		$content = str_replace($this->name.'/work/', '', $content);
 		$page = $this->load->view($this->page_work, '', true);
