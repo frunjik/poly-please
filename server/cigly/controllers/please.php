@@ -20,6 +20,9 @@ class Please extends CI_Controller {
 		$this->page_view = 'poly_page_view';
 		$this->page_edit = 'poly_page_edit';
 		$this->page_work = 'poly_page_work';
+		
+		$this->tag_content = '[@content@]';
+		
 	}
 
 	public function index($dummy='')
@@ -31,7 +34,7 @@ class Please extends CI_Controller {
 	public function view($dummy='')
 	{
 		$this->load->helper('url');
-		$result = '';
+		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
 		if($dummy=='')
 			$content = $content.'/poly_view_welcome';
@@ -55,10 +58,11 @@ class Please extends CI_Controller {
 		echo $result;
 	}
 	
+	/****
 	private function __view($url)
 	{
 		$this->load->helper('url');
-		$result = '[content]';
+		$result = $this->tag_content;
 		$content = $url;
 		$page = $this->load->view($this->page_view, '', true);
 		$content = str_replace($this->name.'/view', '', $content);
@@ -77,12 +81,13 @@ class Please extends CI_Controller {
 			$result = $page;
 		return $result;
 	}
+	****/
 	
 	public function edit($dummy='')
 	{
 		$this->load->helper('url');
 	
-		$result = '[content]';
+		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
 		$content = str_replace($this->name.'/edit/', '', $content);
 		$page = $this->load->view($this->page_edit, '', true);
@@ -108,7 +113,7 @@ class Please extends CI_Controller {
 	{
 		$this->load->helper('url');
 	
-		$result = '[content]';
+		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
 		$content = str_replace($this->name.'/work/', '', $content);
 		$page = $this->load->view($this->page_work, '', true);
@@ -128,7 +133,7 @@ class Please extends CI_Controller {
 
 	public function load($dummy='')
 	{
-		$result = '';
+		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
 		$content = str_replace($this->name.'/load/', '', $content);
 		if($content)
@@ -305,23 +310,25 @@ class Please extends CI_Controller {
 			
 			if($this->is_literal($cmd))
 			{
-				echo 'do_literal ==> ';
-				$result = $this->do_literal(substr($cmd,1),$result);
+				$lit = substr($cmd,1);
+				echo 'do_literal ==> '.$lit.'<br/>';
+				$result = $this->do_literal($lit,$result);
 			}
 			else if($this->is_html($cmd))
 			{
-				echo 'do_html ==> ';
-				$result = $this->do_html(substr($cmd,1),$result);
+				$html = substr($cmd,1);
+				echo 'do_html ==> '.html_escape($html).'<br/>';
+				$result = $this->do_html($html,$result);
 			}
 			else if($this->has_method('_'.$cmd))
 			{
 				$method = '_'.$cmd;
-				echo 'do_method('.$method.') ==> ';
+				echo 'do_method('.$method.') ==> '.$method.'</br/>';
 				$result = $this->do_call($method,$result);
 			}
 			else
 			{
-				echo 'do_load('.$cmd.') ==> ';
+				echo 'do_load('.$cmd.', "'.html_escape($result).'") ==> <br/>';
 				$result = $this->do_load($cmd,$result);
 			}
 
@@ -431,7 +438,7 @@ class Please extends CI_Controller {
 
 	private function replace_content($with, $haystack)
 	{
-		return str_replace('[content]', $with, $haystack);
+		return str_replace($this->tag_content, $with, $haystack);
 	}
 	
 	// test methods - callable via go
