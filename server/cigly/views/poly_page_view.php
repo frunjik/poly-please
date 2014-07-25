@@ -149,7 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     	</core-header-panel>
     <div tool>Main</div>
     <div class="content">
-    <ajax-view id="view" get_url="">[content]</ajax-view>
+    <ajax-view id="view" get_url="">[@content@]</ajax-view>
     </div>
   </core-scaffold>
   

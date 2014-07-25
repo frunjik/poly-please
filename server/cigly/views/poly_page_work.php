@@ -99,8 +99,7 @@ Polymer({
 		get_url="[get_url]" 
 		post_url="" 
 		height="400px"
-		code="">
-	</code-view>
+		code="">[@content@]</code-view>
   
 </div>
 </core-scroll-header-panel>

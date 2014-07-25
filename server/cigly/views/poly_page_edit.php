@@ -167,8 +167,7 @@ Polymer({
 		get_url="[get_url]" 
 		post_url="" 
 		height="550px"
-		code="">
-	</code-view>
+		code="">[@content@]</code-view>
   
 </core-scaffold>
 
