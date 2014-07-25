@@ -50,7 +50,7 @@
 
 <hr/>
 <div>
-  <a href="/poly/alter/view/poly_view_faq">/poly/alter/view/poly_view_faq</a><br/>
+  <a href="/poly/please/view/poly_view_faq">/poly/please/view/poly_view_faq</a><br/>
   => this
 </div>
 
