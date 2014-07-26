@@ -24,6 +24,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<link rel="import" href="components/core-menu/core-submenu.html">
   <link rel="import" href="components/core-item/core-item.html">
   <link rel="import" href="components/core-ajax/core-ajax.html">
+
+  <link rel="import" href="components/elements/poly-link.html">
   
   <style>
     html, body {
@@ -97,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   
 <polymer-element name="file-list" attributes="url">
   <template>
-		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{url}}"></core-ajax>
+    <core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{hostname}}{{url}}"></core-ajax>
     <template repeat="{{f in files}}">
       <p>
         <a onClick="edit('{{f}}');">{{f}}</a>
@@ -108,6 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer('file-list', {
       ready: function() {
+        this.hostname = PolyPlease.Uri.site();
         this.files = [];
         this.refresh();
       },
@@ -125,20 +128,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   
   <core-scaffold>
     <core-header-panel navigation flex mode="seamed">
-      <core-toolbar style="background-color: #526E9C; color: #fff;">Poly</core-toolbar>
-        <core-menu selected="0" selectedindex="0" id="core_menu">
-          <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
-            <core-item label="welcome" size="24" horizontal center layout onClick="show('load/view_poly_welcome')"></core-item>
-            <core-item label="faq" size="24" horizontal center layout onClick="show('load/view_poly_faq')"></core-item>
-            <core-item label="php errors" size="24" horizontal center layout onClick="show('get/errors')"></core-item>
-            <core-item label="server errors" size="24" horizontal center layout onClick="show('get/server')"></core-item>
-            <core-item label="access" size="24" horizontal center layout onClick="show('get/access')"></core-item>
-          </core-submenu>
-          <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
-            <file-list id="list" url="/poly/please/get/files"/>
-          </core-submenu>
-        </core-menu>
-    	</core-header-panel>
+      
+      <core-toolbar style="background-color: #526E9C; color: #fff;">
+        <poly-link link=""><content/>PolyPlease?</poly-link>
+      </core-toolbar>
+      
+      <core-menu selected="0" selectedindex="0" id="core_menu">
+        <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
+          <core-item label="welcome" size="24" horizontal center layout onClick="show('load/view_poly_welcome')"></core-item>
+          <core-item label="faq" size="24" horizontal center layout onClick="show('load/view_poly_faq')"></core-item>
+          <core-item label="php errors" size="24" horizontal center layout onClick="show('get/errors')"></core-item>
+          <core-item label="server errors" size="24" horizontal center layout onClick="show('get/server')"></core-item>
+          <core-item label="access" size="24" horizontal center layout onClick="show('get/access')"></core-item>
+        </core-submenu>
+        <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
+          <file-list id="list" url="please/get/files"/>
+        </core-submenu>
+      </core-menu>
+    </core-header-panel>
     <div tool>Main</div>
     <div class="content">
     <ajax-view id="view" get_url="">[@content@]</ajax-view>

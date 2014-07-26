@@ -12,6 +12,8 @@
 	<link rel="import" href="components/code-mirror/code-mirror.html">
 	<link rel="import" href="components/core-ajax/core-ajax.html">
 	<link rel="import" href="components/core-field/core-field.html">
+
+  <link rel="import" href="components/elements/poly-link.html">
   
 </head>
 <body unresolved touch-action="auto">
@@ -113,17 +115,18 @@ Polymer({
 
 <polymer-element name="file-list" attributes="url">
   <template>
-		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{url}}"></core-ajax>
+    <core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{hostname}}{{url}}"></core-ajax>
     <template repeat="{{f in files}}">
-      <a onClick="show('{{f}}');">
-        <core-item label="{{f}}" size="24" horizontal center layout onClick="show('view_poly_faq')"></core-item>
-      </a>
+      <p>
+        <a onClick="edit('{{f}}');">{{f}}</a>
+      </p>
     </template>
   </template>
 
   <script>
     Polymer('file-list', {
       ready: function() {
+        this.hostname = PolyPlease.Uri.site();
         this.files = [];
         this.refresh();
       },
@@ -138,11 +141,11 @@ Polymer({
     });
   </script>
 </polymer-element>
-
+  
 <core-scaffold>
   <core-header-panel navigation flex mode="seamed">
     <core-toolbar style="background-color: #526E9C; color: #fff;">
-     <a style="background-color: #526E9C; color: #fff;" href="/poly/please/">Poly</a>
+      <poly-link link=""><content/>PolyPlease?</poly-link>
     </core-toolbar>
     <core-menu selected="0" selectedindex="0" id="core_menu">
       <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
@@ -150,7 +153,7 @@ Polymer({
         <core-item label="welcome code" size="24" horizontal center layout onClick="show('view_poly_faq')"></core-item>
       </core-submenu>
     <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
-      <file-list url="/poly/please/get/files"/>
+      <file-list url="please/get/files"/>
     </core-submenu>
     </core-menu>
   </core-header-panel>
