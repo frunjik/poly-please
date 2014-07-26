@@ -74,7 +74,6 @@
   
 	<form id="form" action="{{post_url}}" method="POST">
 		<textarea wrap="hard" name="content" type="text" hidden></textarea>
-		<!--input name="name" type="text" hidden/ -->
 	</form>
   
 </template>
@@ -112,13 +111,13 @@ Polymer({
 </script>
 </polymer-element> 
 
-<polymer-element name="file-list">
+<polymer-element name="file-list" attributes="url">
   <template>
-		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="/poly/please/get/files"></core-ajax>
+		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{url}}"></core-ajax>
     <template repeat="{{f in files}}">
-      <p>
-        <a onClick="show('{{f}}');">{{f}}</a>
-      </p>
+      <a onClick="show('{{f}}');">
+        <core-item label="{{f}}" size="24" horizontal center layout onClick="show('view_poly_faq')"></core-item>
+      </a>
     </template>
   </template>
 
@@ -150,12 +149,9 @@ Polymer({
         <core-item label="welcome poly" size="24" horizontal center layout onClick="show('view_poly_welcome')"></core-item>
         <core-item label="welcome code" size="24" horizontal center layout onClick="show('view_poly_faq')"></core-item>
       </core-submenu>
-      <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
-        <core-item label="" size="24" id="core_item2" horizontal center layout>
-		  <file-list/>
-          <!--a href="/poly/poly/edit/new">New</a-->
-        </core-item>
-      </core-submenu>
+    <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
+      <file-list url="/poly/please/get/files"/>
+    </core-submenu>
     </core-menu>
   </core-header-panel>
   
