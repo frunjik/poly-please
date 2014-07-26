@@ -16,8 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="apple-mobile-web-app-capable" content="yes">
   
   <script src="components/platform/platform.js"></script>
-  <!-- TODO script src="/poly/please/load/poly_script"></script-->
-
+  <script src="/poly/scripts/poly_js.js"></script>
   
   <link rel="import" href="components/core-scaffold/core-scaffold.html">
   <link rel="import" href="components/core-header-panel/core-header-panel.html">
@@ -27,7 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="components/core-ajax/core-ajax.html">
   
   <style>
-
     html, body {
       height: 100%;
       margin: 0;
@@ -59,7 +57,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     core-scaffold[mode=cover] .content {
       margin: 20px 100px 20px 0;
     }
-    
   </style>
   
 </head>
@@ -98,13 +95,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </script>
 </polymer-element>
   
-<polymer-element name="file-list">
+<polymer-element name="file-list" attributes="url">
   <template>
-    <!-- TODO -->
-    <core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="/poly/please/get/files/poly_"></core-ajax>
+		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="{{url}}"></core-ajax>
     <template repeat="{{f in files}}">
       <p>
-        <a onClick="goto('{{f}}');">{{f}}</a>
+        <a onClick="edit('{{f}}');">{{f}}</a>
       </p>
     </template>
   </template>
@@ -129,21 +125,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   
   <core-scaffold>
     <core-header-panel navigation flex mode="seamed">
-      <core-toolbar style="background-color: #526E9C; color: #fff;">
-        <a style="color: #fff;" href="/poly/please/">Poly! - Please?</a></core-toolbar>
+      <core-toolbar style="background-color: #526E9C; color: #fff;">Poly</core-toolbar>
         <core-menu selected="0" selectedindex="0" id="core_menu">
           <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
-            <core-item label="welcome" size="24" horizontal center layout onClick="show('load/poly_view_welcome')"></core-item>
-            <core-item label="faq" size="24" horizontal center layout onClick="show('load/poly_view_faq')"></core-item>
+            <core-item label="welcome" size="24" horizontal center layout onClick="show('load/view_poly_welcome')"></core-item>
+            <core-item label="faq" size="24" horizontal center layout onClick="show('load/view_poly_faq')"></core-item>
             <core-item label="php errors" size="24" horizontal center layout onClick="show('get/errors')"></core-item>
             <core-item label="server errors" size="24" horizontal center layout onClick="show('get/server')"></core-item>
             <core-item label="access" size="24" horizontal center layout onClick="show('get/access')"></core-item>
           </core-submenu>
           <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
-            <file-list/>
-            <core-item label="" size="24" id="core_item2" horizontal center layout>
-              <file-list/>
-            </core-item>
+            <file-list id="list" url="/poly/please/get/files"/>
           </core-submenu>
         </core-menu>
     	</core-header-panel>
@@ -154,39 +146,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </core-scaffold>
   
   <script>
-    
-  function path_segments(url)
+  function edit(view_url)
   {
-    var segs = url.split('/');
-    if(segs && !segs[0])
-    	segs.shift();
-    return segs;
+    var url = PolyPlease.Uri.please('edit/'+view_url);
+    window.location.assign(url);
   }
-   
-  function ctrlr_name(url)
-  {
-    return path_segments(url)[0];
-  }
-    
-  function make_view_url(url)
-  {
-		var ctrl = ctrlr_name(url);
-		return '/' + ctrl + '/please/' + url;
-  }
-    
-  function goto(url)
-  {
-		var ctrl = ctrlr_name(document.location.pathname);
-    window.location.replace('/' + ctrl + '/please/edit/' + url);
-  }
-
   function show(view_url)
   {
+    var url = PolyPlease.Uri.please(view_url);
     var v = document.getElementById('view');
-		var ctrl = ctrlr_name(document.location.pathname);
-		var u = '/' + ctrl + '/please/' + view_url;
-    //alert(u);
-    v.get_url = u;
+    v.get_url = url;
   }
   </script>
   

@@ -81,7 +81,7 @@
 
 		<p>To edit this page:</p>
 		<code>
-      <a href="/poly/please/edit/poly_view_welcome">/poly/please/edit/poly_view_welcome</a>.
+      <a href="/poly/please/edit/view_poly_welcome">/poly/please/edit/poly_view_welcome</a>.
     </code>
 
 		<p>The corresponding controller for this page is found at:</p>
@@ -91,7 +91,7 @@
     </p>
 
     <code>
-      <a href="/poly/please/view/poly_view_faq">/poly/please/view/poly_view_faq</a>.
+      <a href="/poly/please/view/view_poly_faq">/poly/please/view/poly_view_faq</a>.
     </code>
 
   </div>

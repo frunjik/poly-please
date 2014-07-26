@@ -3,7 +3,9 @@
 <head>
   <title>/poly/please/edit/[get_url]</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-	<script src="components/platform/platform.js"></script>
+  <script src="/components/platform/platform.js"></script>
+  <script src="/poly/scripts/poly_js.js"></script>
+	
 	<link rel="import" href="components/core-scaffold/core-scaffold.html">
 	<link rel="import" href="components/core-menu/core-menu.html">
 	<link rel="import" href="components/core-menu/core-submenu.html">
@@ -112,14 +114,12 @@ Polymer({
 
 <polymer-element name="file-list">
   <template>
-   <section>
-		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="/poly/please/get/files/poly_"></core-ajax>
+		<core-ajax id="request" handleAs="json" on-core-response="{{onResponse}}" url="/poly/please/get/files"></core-ajax>
     <template repeat="{{f in files}}">
       <p>
-        <a onClick="goto('{{f}}');">{{f}}</a>
+        <a onClick="show('{{f}}');">{{f}}</a>
       </p>
     </template>
-    </section>
   </template>
 
   <script>
@@ -143,14 +143,12 @@ Polymer({
 <core-scaffold>
   <core-header-panel navigation flex mode="seamed">
     <core-toolbar style="background-color: #526E9C; color: #fff;">
-      <a style="color: #fff;" href="/poly/please/">Poly! - Please?</a></core-toolbar>
+     <a style="background-color: #526E9C; color: #fff;" href="/poly/please/">Poly</a>
+    </core-toolbar>
     <core-menu selected="0" selectedindex="0" id="core_menu">
       <core-submenu active label="Site" icon="settings" valueattr="name" id="core_submenu">
-        <core-item label="welcome" size="24" horizontal center layout onClick="show('load/poly_view_welcome')"></core-item>
-        <core-item label="faq" size="24" horizontal center layout onClick="show('load/poly_view_faq')"></core-item>
-        <core-item label="php errors" size="24" horizontal center layout onClick="show('get/errors')"></core-item>
-        <core-item label="server errors" size="24" horizontal center layout onClick="show('get/server')"></core-item>
-        <core-item label="access" size="24" horizontal center layout onClick="show('get/access')"></core-item>
+        <core-item label="welcome poly" size="24" horizontal center layout onClick="show('view_poly_welcome')"></core-item>
+        <core-item label="welcome code" size="24" horizontal center layout onClick="show('view_poly_faq')"></core-item>
       </core-submenu>
       <core-submenu label="Meta" icon="settings" valueattr="name" id="core_submenu1">
         <core-item label="" size="24" id="core_item2" horizontal center layout>
@@ -161,8 +159,6 @@ Polymer({
     </core-menu>
   </core-header-panel>
   
-  <div tool>[get_url]</div>
-  
 	<code-view id="view"
 		get_url="[get_url]" 
 		post_url="" 
@@ -172,39 +168,12 @@ Polymer({
 </core-scaffold>
 
  <script>
-   
-  function path_segments(url)
-  {
-    var segs = url.split('/');
-    if(segs && !segs[0])
-    	segs.shift();
-    return segs;
-  }
-   
-  function ctrlr_name()
-  {
-    return path_segments(document.location.pathname)[0];
-  }
-
-  function goto(view_url)
-  {
-    var ctrl = ctrlr_name();
-    var v = document.getElementById('view');
-		var u = '/' + ctrl + '/please/edit/' + view_url;
-    //alert(u);
-    document.location.replace(u);
-  }
-
   function show(view_url)
   {
-    var ctrl = ctrlr_name();
+    var url = PolyPlease.Uri.please('load/'+view_url);
     var v = document.getElementById('view');
-		var u = '/' + ctrl + '/please/' + view_url;
-    
-    //alert(u);
-    
-    v.get_url = u;
-		v.load();
+    v.get_url = url;
+    v.load();
   }
   </script>
 

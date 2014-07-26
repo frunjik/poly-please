@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title></title>
+  <title>/poly/please/work/[get_url]</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<script src="components/platform/platform.js"></script>
 	<link rel="import" href="components/core-scaffold/core-scaffold.html">

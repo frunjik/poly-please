@@ -10,19 +10,24 @@ class Please extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		
-		$this->name = 'please';
+		// TODO: put in config 
+		// all foldernames must end with a slash!
 		
-		// TODO: put in config
-		$this->path_logs = 'C:/wamp/logs/';										// ends with SLASH
-		$this->path_root = 'C:/Projects/Web/poly-please/server/cigly/';			// ends with SLASH
+		$this->please = 'please';
+
+		//$application_folder;
+		$this->path_disk = 'C:/';									
+		$this->path_logs = $this->path_disk.'wamp/logs/';									
+		$this->path_root = $this->path_disk.'Projects/Web/poly-please/server/cigly/';			
+		$this->path_app  = $this->path_root;							
+		$this->path_views= $this->path_app.'views/';			
 		
 		// TODO: put in dict - generalize ...
-		$this->page_view = 'poly_page_view';
-		$this->page_edit = 'poly_page_edit';
-		$this->page_work = 'poly_page_work';
+		$this->page_view = 'page_poly_view';
+		$this->page_edit = 'page_poly_edit';
+		$this->page_work = 'page_poly_work';
 		
 		$this->tag_content = '[@content@]';
-		
 	}
 
 	public function index($dummy='')
@@ -37,51 +42,25 @@ class Please extends CI_Controller {
 		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
 		if($dummy=='')
-			$content = $content.'/poly_view_welcome';
+			$content = $content.'/view_poly_welcome';
 
 		$page = $this->load->view($this->page_view, '', true);
-		$content = str_replace($this->name.'/view', '', $content);
+		$content = str_replace($this->please.'/view', '', $content);
+		
+		if($content[0]==='/') $content=substr($content,1);
+		$page = str_replace('[get_url]', site_url().$this->please.'/view/'.$content, $page);
 		
 		if($content)
 		{
-			if($content[0]==='/') $content=substr($content,1);
-			$page = str_replace('[get_url]', site_url().$this->name.'/view/'.$content, $page);
 			$result = $content;			
 			$result = $this->do_load($content,$result);
 			$result = $this->replace_content($result, $page);
 		}
-		else
-			$page = str_replace('[get_url]', site_url().$this->name.'/view/', $page);
 
 		if(!$result)
 			$result = $page;
 		echo $result;
 	}
-	
-	/****
-	private function __view($url)
-	{
-		$this->load->helper('url');
-		$result = $this->tag_content;
-		$content = $url;
-		$page = $this->load->view($this->page_view, '', true);
-		$content = str_replace($this->name.'/view', '', $content);
-		if($content)
-		{
-			if($content[0]==='/') $content=substr($content,1);
-			$page = str_replace('[get_url]', site_url().$this->name.'/view/'.$content, $page);
-			$result = $content;			
-			$result = $this->do_load($content,$result);
-			$result = $this->replace_content($result, $page);
-		}
-		else
-			$page = str_replace('[get_url]', site_url().$this->name.'/view/', $page);
-
-		if(!$result)
-			$result = $page;
-		return $result;
-	}
-	****/
 	
 	public function edit($dummy='')
 	{
@@ -89,13 +68,12 @@ class Please extends CI_Controller {
 	
 		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
-		$content = str_replace($this->name.'/edit/', '', $content);
+		$content = str_replace($this->please.'/edit/', '', $content);
 		$page = $this->load->view($this->page_edit, '', true);
+		$page = str_replace('[get_url]', site_url().$this->please.'/load/'.$content, $page);
 
-		if($content != $this->name.'/edit' && $content != $this->name.'/edit/')
+		if($content != $this->please.'/edit' && $content != $this->please.'/edit/')
 		{
-			$page = str_replace('[get_url]', site_url().$this->name.'/load/'.$content, $page);
-			
 			// TODO test if view exists ????
 			$result = $this->do_load($content,$result);
 			
@@ -109,17 +87,39 @@ class Please extends CI_Controller {
 		echo $result;
 	}
 
+	public function create($dummy='')
+	{
+		$this->load->helper('url');
+	
+		$uri = $this->uri->uri_string();		
+		$content = $uri;
+		$content = str_replace($this->please.'/create/', '', $content);
+
+		if($content)
+		{
+			$this->load->helper('file');
+
+			// create
+			$filename = $this->path_views.$content.'.php';
+			if(!file_exists($filename))
+				write_file($filename, $content, 'w+');
+		}
+		$url = 'edit/'.$content;
+		$url = site_url().str_replace($this->please.'/create', $this->please.'/edit', $uri);
+		redirect($url);
+	}
+
 	public function work($dummy='')
 	{
 		$this->load->helper('url');
 	
 		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
-		$content = str_replace($this->name.'/work/', '', $content);
+		$content = str_replace($this->please.'/work/', '', $content);
 		$page = $this->load->view($this->page_work, '', true);
+		$page = str_replace('[get_url]', site_url().$this->please.'/load/'.$content, $page);
 		if($content)
 		{
-			$page = str_replace('[get_url]', site_url().$this->name.'/load/'.$content, $page);
 
 			$result = $this->do_load($content,$result);
 			if($result)
@@ -135,7 +135,7 @@ class Please extends CI_Controller {
 	{
 		$result = $this->tag_content;
 		$content = $this->uri->uri_string();
-		$content = str_replace($this->name.'/load/', '', $content);
+		$content = str_replace($this->please.'/load/', '', $content);
 		if($content)
 		{
 			$result = $this->do_load($content,$result);
@@ -149,12 +149,9 @@ class Please extends CI_Controller {
 		$this->load->helper('file');
 
 		$uri = $this->uri->uri_string();
-		$file = str_replace($this->name.'/save/', '', $uri);
+		$file = str_replace($this->please.'/save/', '', $uri);
 		
-		//echo $this->path_root;
-		//return;
-
-		$path = $this->path_root.'views/'.$file.'.php';
+		$path = $this->path_views.$file.'.php';
 
 		$goto = $this->input->get('goto');
 		if($goto)
@@ -164,29 +161,72 @@ class Please extends CI_Controller {
 		{
 			$page = $this->input->get('page');
 			if($page)
-				$goto = site_url().str_replace($this->name.'/save', $this->name.'/'.$page, $uri);
+				$goto = site_url().str_replace($this->please.'/save', $this->please.'/'.$page, $uri);
 			else
-				$goto = site_url().str_replace($this->name.'/save', $this->name.'/edit', $uri);
+				$goto = site_url().str_replace($this->please.'/save', $this->please.'/edit', $uri);
 		}
 		
 		$post = $this->input->post();
 		$data = $post['content'];
 
-		//echo $path.'<br/>';
-		//if($goto)
-		//	echo $goto.'<br/>';
-		//echo(html_escape($data));
-		//return;
+		/*
+		if(true)
+		{
+		echo $path.'<br/>';
+		if($goto)
+			echo $goto.'<br/>';
+		echo(html_escape($data));
+		return;
+		}
+		*/
 		
 		write_file($path, $data, 'w+');
 		redirect($goto);
 	}
 
+	public function add($collection,$string='')
+	{
+		$this->load->helper('url');
+		$this->load->helper('file');
+	
+		$uri = $this->uri->uri_string();
+		$uri = urldecode($uri);
+		
+		//echo $uri.'<br/>';
+		$parts = explode('"', $uri);
+		//echo var_dump($parts);
+		
+		$thing = $parts[1];
+		$collection = explode('/', $parts[0]);
+		array_pop($collection);
+		
+		//echo var_dump($collection);
+		
+		$collection = array_pop($collection);
+		
+		//echo var_dump($thing);
+		//echo var_dump($collection);
+		
+		echo $thing.'<br/>';
+		echo $collection.'<br/>';
+		
+		$filename = $this->path_views.$collection.'.php';
+		$chunk = read_file($filename);
+		if($string)
+		{
+			$array = json_decode($chunk);
+			array_push($array, json_decode($thing));
+			$chunk = json_encode($array);
+			write_file($filename, $chunk);
+		}
+		echo $chunk;
+	}
+	
 	public function get($subj='files',$with='')
 	{
 		if($subj=='files')
 		{
-			$path = $this->path_root.'views/';
+			$path = $this->path_views;
 			$files = scandir($path);
 			$result = array();
 			foreach($files as $f)
@@ -285,8 +325,6 @@ class Please extends CI_Controller {
 		return trim($output);
  	}	
 	
-	
-	
 	public function go($dummy='')
 	{
 		$cmds = $this->uri->segments;
@@ -323,7 +361,7 @@ class Please extends CI_Controller {
 			else if($this->has_method('_'.$cmd))
 			{
 				$method = '_'.$cmd;
-				echo 'do_method('.$method.') ==> '.$method.'</br/>';
+				echo 'do_method('.$method.",'".$result."') ==> ".$method.'</br/>';
 				$result = $this->do_call($method,$result);
 			}
 			else
@@ -341,7 +379,7 @@ class Please extends CI_Controller {
 		echo $this->_escape($result);
 		echo '<hr/>';
 	}
-
+	
 	private function __go($cmds,$content)
 	{
 		$result = $content;
@@ -462,12 +500,48 @@ class Please extends CI_Controller {
 		return $content;
 	}
 
+	private function _lines($content='')
+	{
+		return 
+			implode('<br/>',
+			explode(',',$content));
+	}
 
+	private function _json($content='')
+	{
+		return json_encode($content);
+	}
+
+	private function _j2s($content='')
+	{
+		return json_encode($content);
+	}
+
+	private function _s2j($content='')
+	{
+		return json_decode($content);
+	}
+
+	private function _test_js($cmd='',$content='')
+	{
+		return json_encode(
+			array(
+				"a",
+				"b",
+			)
+		);
+	}
 	
+	private function _test_str($cmd='',$content='')
+	{
+		return '["a","b"]';
+	}
 	
-	
+	public function test($cmd='',$content='')
+	{
+		echo $application_path;
+	}
 }
 		
-
 /* End of file please.php */
 /* Location: ./application/controllers/please.php */
